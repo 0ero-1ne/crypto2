@@ -12,3 +12,4 @@ C:\Univer\Sec\Lab2\obj\Debug\net8.0\refint\Lab2.dll
 C:\Univer\Sec\Lab2\obj\Debug\net8.0\Lab2.pdb
 C:\Univer\Sec\Lab2\obj\Debug\net8.0\Lab2.genruntimeconfig.cache
 C:\Univer\Sec\Lab2\obj\Debug\net8.0\ref\Lab2.dll
+C:\Univer\Sec\Lab2\obj\Debug\net8.0\Lab2.sourcelink.json

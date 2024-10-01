@@ -149,7 +149,7 @@ foreach (var item in alphabet) {
         item.Key == '\'' ? "\\'" :
         item.Key.ToString();
 
-    File.AppendAllText(csvFileContent, ch + "\t" + item.Value + '\n');
+    File.AppendAllText(csvFileContent, ch + "\t" + (double)item.Value / fileContent.Length + '\n');
 }
 
 var a = 7;
@@ -162,7 +162,11 @@ var elapsedMs = watch.ElapsedMilliseconds;
 
 Console.WriteLine("Aphine encoding: " + elapsedMs);
 
+watch = System.Diagnostics.Stopwatch.StartNew();
 var aphineDecodedMessage = AphineDecode(a, b, characters.Length, aphineEncodedMessage, characters);
+watch.Stop();
+elapsedMs = watch.ElapsedMilliseconds;
+Console.WriteLine("Aphine decoding: " + elapsedMs);
 
 foreach (var ch in aphineEncodedMessage) {
     if (!aphineAlphabet.TryAdd(ch, 1)) {
@@ -179,10 +183,10 @@ foreach (var item in aphineAlphabet) {
         item.Key == '\'' ? "\\'" :
         item.Key.ToString();
 
-    File.AppendAllText(csvAphineFilePath, ch + "\t" + item.Value + '\n');
+    File.AppendAllText(csvAphineFilePath, ch + "\t" + (double)item.Value / aphineEncodedMessage.Length + '\n');
 }
 
-Console.WriteLine(fileContent == aphineDecodedMessage);
+Console.WriteLine("Is given text same as Aphine decoded text: " + (fileContent == aphineDecodedMessage));
 
 watch = System.Diagnostics.Stopwatch.StartNew();
 var vigenereEncodedMessage = VigenereEncode(fileContent, "воликов", characters);
@@ -191,9 +195,13 @@ elapsedMs = watch.ElapsedMilliseconds;
 
 Console.WriteLine("Vigenere encoding: " + elapsedMs);
 
+watch = System.Diagnostics.Stopwatch.StartNew();
 var vigenereDecodedMessage = VigenereDecode(vigenereEncodedMessage, "воликов", characters);
+watch.Stop();
+elapsedMs = watch.ElapsedMilliseconds;
+Console.WriteLine("Vigenere decoding: " + elapsedMs);
 
-Console.WriteLine(vigenereDecodedMessage == fileContent);
+Console.WriteLine("Is given text same as Vigenere decoded text: " + (vigenereDecodedMessage == fileContent));
 
 foreach (var ch in vigenereEncodedMessage) {
     if (!vigenereAlphabet.TryAdd(ch, 1)) {
@@ -210,5 +218,5 @@ foreach (var item in vigenereAlphabet) {
         item.Key == '\'' ? "\\'" :
         item.Key.ToString();
 
-    File.AppendAllText(csvVigenereFilePath, ch + "\t" + item.Value + '\n');
+    File.AppendAllText(csvVigenereFilePath, ch + "\t" + (double)item.Value / vigenereEncodedMessage.Length + '\n');
 }
