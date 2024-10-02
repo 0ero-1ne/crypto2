@@ -7,4 +7,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+  <Reference Include="SpiralPermutation">
+    <HintPath>SpiralPermutation.dll</HintPath>
+    <SpecificVersion>False</SpecificVersion> 
+  </Reference>
+</ItemGroup>
+
 </Project>

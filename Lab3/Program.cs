@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using SpiralPermutation;
 
 static void CalculateCharsFrequency(ref Dictionary<char, int> alphabet, string message)
 {
@@ -26,120 +27,6 @@ static void CharsFrequencyToCSV(ref readonly Dictionary<char, int> alphabet, str
     }
 }
 
-static int CalculateMatrixRows(int columns, int messageLength) {
-    return (int)Math.Ceiling((double)messageLength / columns);
-}
-
-static string SpiralPermutationEncode(string message, int columns)
-{   
-    if (columns < 5) {
-        throw new Exception("Spiral permutation encoding: Number of columns must be >= 5");
-    }
-
-    int rows = CalculateMatrixRows(columns, message.Length);
-    char[,] matrix = new char[rows, columns];
-
-    string formatMessage = message + new string('*', columns * rows - message.Length);
-
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < columns; j++) {
-            matrix[i, j] = formatMessage[i * columns + j];
-        }
-    }
-
-    string encodedMessage = "";
-    
-    // Вообще не понимаю как читать по спирали, пытался вывести закономерность, но не получилось
-    // Поэтому взял готовый алгоритм с какого-то задрыпанного сайта по С
-    // https://www.haikson.com/programming/zapolnenie-dvumernoj-matritsyi-po-spirali/
-
-    int Ibeg = 0;
-    int Ifin = 0;
-    int Jbeg = 0;
-    int Jfin = 0;
-
-    int counter = 0;
-    int I = 0;
-    int J = 0;
-
-    while (counter < rows * columns){
-        encodedMessage += formatMessage[I * columns + J];
-
-        if (I == Ibeg && J < columns - Jfin - 1)
-            ++J;
-        else if (J == columns - Jfin - 1 && I < rows - Ifin - 1)
-            ++I;
-        else if (I == rows - Ifin - 1 && J > Jbeg)
-            --J;
-        else
-            --I;
-
-        if ((I == Ibeg + 1) && (J == Jbeg) && (Jbeg != columns - Jfin - 1)){
-            ++Ibeg;
-            ++Ifin;
-            ++Jbeg;
-            ++Jfin;
-        }
-
-        counter++;
-    }
-
-    // -------------------------------------------
-
-    return encodedMessage;
-}
-
-static string SpiralPermutationDecode(string message, int columns)
-{
-    if (columns < 5) {
-        throw new Exception("Spiral permutation encoding: Number of columns must be >= 5");
-    }
-
-    int rows = CalculateMatrixRows(columns, message.Length);
-    char[,] matrix = new char[rows, columns];
-
-    int Ibeg = 0;
-    int Ifin = 0;
-    int Jbeg = 0;
-    int Jfin = 0;
-
-    int counter = 0;
-    int I = 0;
-    int J = 0;
-
-    while (counter < rows * columns){
-        matrix[I, J] = message[counter];
-
-        if (I == Ibeg && J < columns - Jfin - 1)
-            ++J;
-        else if (J == columns - Jfin - 1 && I < rows - Ifin - 1)
-            ++I;
-        else if (I == rows - Ifin - 1 && J > Jbeg)
-            --J;
-        else
-            --I;
-
-        if ((I == Ibeg + 1) && (J == Jbeg) && (Jbeg != columns - Jfin - 1)){
-            ++Ibeg;
-            ++Ifin;
-            ++Jbeg;
-            ++Jfin;
-        }
-
-        counter++;
-    }
-
-    string decodedMessage = "";
-
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < columns; j++) {
-            decodedMessage += matrix[i, j].ToString();
-        }
-    }
-
-    return decodedMessage[..decodedMessage.IndexOf('*')];
-}
-    
 static string GenerateRandomMessage(int length)
 {
     string characters = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
@@ -271,13 +158,13 @@ CharsFrequencyToCSV(ref alphabet, csvFileContent);
 int spiralColumns = 20;
 
 var watch = System.Diagnostics.Stopwatch.StartNew();
-var spiralEncodedMessage = SpiralPermutationEncode(fileContent, spiralColumns);
+var spiralEncodedMessage = SpiralEncoding.Encode(fileContent, spiralColumns);
 watch.Stop();
 
 Console.WriteLine("Spiral encoding time, ms: " + watch.Elapsed);
 
 watch = System.Diagnostics.Stopwatch.StartNew();
-var spiralDecodedMessage = SpiralPermutationDecode(spiralEncodedMessage, spiralColumns);
+var spiralDecodedMessage = SpiralEncoding.Decode(spiralEncodedMessage, spiralColumns);
 watch.Stop();
 
 Console.WriteLine("Spiral decoding time, ms: " + watch.Elapsed);

@@ -13,3 +13,6 @@ C:\Univer\Sec\Lab3\obj\Debug\net8.0\refint\Lab3.dll
 C:\Univer\Sec\Lab3\obj\Debug\net8.0\Lab3.pdb
 C:\Univer\Sec\Lab3\obj\Debug\net8.0\Lab3.genruntimeconfig.cache
 C:\Univer\Sec\Lab3\obj\Debug\net8.0\ref\Lab3.dll
+C:\Univer\Sec\Lab3\bin\Debug\net8.0\SpiralPermutation.dll
+C:\Univer\Sec\Lab3\obj\Debug\net8.0\Lab3.csproj.AssemblyReference.cache
+C:\Univer\Sec\Lab3\obj\Debug\net8.0\Lab3.csproj.Up2Date
