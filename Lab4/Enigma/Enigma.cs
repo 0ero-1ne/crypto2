@@ -5,8 +5,8 @@ namespace Lab4.Enigma
 {
     public class Enigma(List<Rotor> rotors, Reflector reflector)
     {
-        public List<Rotor> rotors = rotors;
-        public Reflector reflector = reflector;
+        readonly List<Rotor> rotors = rotors;
+        readonly Reflector reflector = reflector;
 
         public void SetRotorsPositions(int[] positions)
         {
@@ -18,63 +18,41 @@ namespace Lab4.Enigma
                 rotors[i].SetPosition(positions[i]);
             }
         }
-    
-        public void SetRotorsRotationNumbers(int[] rotationNumbers)
-        {
-            if (rotationNumbers.Length != rotors.Count) {
-                throw new Exception("Wrong numbers of rotors positions");
-            }   
 
-            for (int i = 0; i < rotors.Count; i++) {
-                rotors[i].SetRotationNumber(rotationNumbers[i]);
-            }
-        }
-    
         public string EncodeMessage(string message)
         {
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
             string encodedMessage = "";
+
             var toRotate = new bool[rotors.Count];
         
             foreach (var ch in message)
             {
-                char encodedChar = ch;
-                toRotate[0] = true;
-                
-                if (!alphabet.Contains(encodedChar)) {
-                    encodedMessage += encodedChar;
+                if (!alphabet.Contains(ch)) {
+                    encodedMessage += ch;
                     continue;
                 }
 
-                var prevFirstRotorPosition = rotors[0].RotorPosition;
-                
-                rotors[0].Rotate();
+                char encodedChar = ch;
+                toRotate[0] = true;
 
-                if (prevFirstRotorPosition > rotors[0].RotorPosition) {
-                    toRotate[1] = true;
-                }
+                for (int i = 0; i < rotors.Count; i++) {
+                    var prevPosition = rotors[i].Position;
 
-                foreach (var rotor in rotors)
-                {
-                    encodedChar = rotor.GetChar(encodedChar);
-                }
-
-                encodedChar = reflector.GetChar(encodedChar);
-
-                for (int i = rotors.Count - 1; i >= 0; i--)
-                {
-                    encodedChar = rotors[i].Alphabet.FirstOrDefault(item => item.Value == encodedChar).Key;
-                }
-
-                for (int i = 1; i < rotors.Count; i++) {
-                    var prevPositionOfRoter = rotors[i].RotorPosition;
-
-                    if (toRotate[i] == true) {
+                    if (toRotate[i]) {
                         rotors[i].Rotate();
                         toRotate[i] = false;
                     }
 
-                    toRotate[(i + 1) % rotors.Count] = prevPositionOfRoter > rotors[i].RotorPosition;
+                    toRotate[(i + 1) % rotors.Count] = prevPosition > rotors[i].Position;
+                }
+
+                rotors.ForEach((rotor) => encodedChar = rotor.GetChar(encodedChar));
+                encodedChar = reflector.GetChar(encodedChar);
+
+                for (int i = rotors.Count - 1; i >= 0; i--)
+                {
+                    encodedChar = rotors[i].Sequence.FirstOrDefault(item => item.Value == encodedChar).Key;
                 }
 
                 encodedMessage += encodedChar;
@@ -83,9 +61,6 @@ namespace Lab4.Enigma
             return encodedMessage;
         }
     
-        public string DecodeMessage(string message)
-        {
-            return EncodeMessage(message);
-        }
+        public string DecodeMessage(string message) => EncodeMessage(message);
     }
 }

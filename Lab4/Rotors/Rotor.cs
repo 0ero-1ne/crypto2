@@ -2,16 +2,14 @@ namespace Lab4.Rotors
 {
     public class Rotor
     {
-        public Dictionary<char, char> Alphabet { get; private set; }
-        public int RotorPosition { get; private set; } = 1;
-        public int RotationNumber { get; private set; } = 1;
-        private readonly string AlphabetFile;
+        public Dictionary<char, char> Sequence { get; private set; } = [];
+        public int Position { get; private set; } = 1;
+        public string SequenceFileText { get; private set; }
 
-        public Rotor(string alphabetFile)
+        public Rotor(string sequenceFile)
         {
-            SetAlphabet(alphabetFile);
-            Alphabet = [];
-            AlphabetFile = alphabetFile;
+            SequenceFileText = File.ReadAllText(sequenceFile).ToLower();
+            SetAlphabet();
         }
 
         public void SetPosition(int position)
@@ -20,64 +18,33 @@ namespace Lab4.Rotors
                 throw new Exception("Rotor positon must be in range from 1 to 26");
             }
 
-            SetAlphabet(AlphabetFile);
-
-            RotorPosition = 1;
+            Position = 1;
+            SetAlphabet();
 
             for (int i = 1; i < position; i++) {
                 Rotate();
             }
         }
 
-        public void SetRotationNumber(int rotationNumber)
-        {
-            if (rotationNumber < 0 || rotationNumber > 25) {
-                throw new Exception("Rotation number must be in range from 1 to 26");
-            }
-
-            RotationNumber = rotationNumber;
-        }
-
-        public char GetChar(char input) => Alphabet[input];
+        public char GetChar(char input) => Sequence[input];
 
         public void Rotate()
         {
-            Dictionary<char, char> newAlphabet = [];
-            char startChar = 'a';
-            char counterChar = 'b';
+            char keyChar = 'a';
+            char dictionaryFirstValue = Sequence[keyChar];
 
-            foreach (var _ in Alphabet)
+            foreach (var item in Sequence)
             {
-                if (startChar == 'z') {
-                    newAlphabet.Add(startChar, Alphabet['a']);
-                } else {
-                    newAlphabet.Add(startChar, Alphabet[counterChar]);
-                }
-
-                startChar++;
-                counterChar++;
+                Sequence[item.Key] = item.Key == 'z' ? dictionaryFirstValue : Sequence[++keyChar];
             }
-
-            Alphabet = newAlphabet;
-
-            RotorPosition++;
-
-            if (RotorPosition == 27) {
-                RotorPosition = 1;
-            }
+            
+            Position = Position == 26 ? 1 : Position++;
         }
 
-        private void SetAlphabet(string alphabetFile)
+        private void SetAlphabet()
         {
-            Alphabet = [];
             char startChar = 'a';
-            string alphabetRow = File.ReadAllText(alphabetFile).ToLower();
-
-            foreach (var ch in alphabetRow)
-            {   
-                Alphabet.Add(startChar, ch);
-                startChar++;
-            }
+            SequenceFileText.ToCharArray().ToList().ForEach((ch) => Sequence[startChar++] = ch);
         }
     }
 }

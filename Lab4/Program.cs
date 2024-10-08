@@ -14,11 +14,21 @@ Enigma enigma = new(rotors, reflector);
 enigma.SetRotorsPositions([1, 2, 1]);
 
 string message = File.ReadAllText(@"./file.txt").ToLower();
-string encodedMessage = enigma.EncodeMessage(message);
 
-Console.WriteLine(encodedMessage);
+Console.WriteLine($"MESSAGE\n{message}\n");
+
+var watch = System.Diagnostics.Stopwatch.StartNew();
+string encodedMessage = enigma.EncodeMessage(message);
+watch.Stop();
+
+Console.WriteLine($"ENCODED MESSAGE\n{encodedMessage}\n\nEncoding time: {watch.Elapsed}\n");
 
 enigma.SetRotorsPositions([1, 2, 1]);
 
+watch = System.Diagnostics.Stopwatch.StartNew();
 string decodedMessage = enigma.DecodeMessage(encodedMessage);
-Console.WriteLine(decodedMessage);
+watch.Stop();
+
+Console.WriteLine($"DECODED MESSAGE\n{decodedMessage}\n\nDecoding time: {watch.Elapsed}\n");
+
+Console.WriteLine($"Are input text and encoded text same? {message == decodedMessage}");
