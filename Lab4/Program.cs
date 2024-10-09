@@ -11,7 +11,7 @@ List<Rotor> rotors = [
 Reflector reflector = new(@"./Reflectors/ReflectorC.txt");
 
 Enigma enigma = new(rotors, reflector);
-enigma.SetRotorsPositions([1, 2, 1]);
+enigma.SetRotorsPositions([3, 5, 7]);
 
 string message = File.ReadAllText(@"./file.txt").ToLower();
 
@@ -23,7 +23,7 @@ watch.Stop();
 
 Console.WriteLine($"ENCODED MESSAGE\n{encodedMessage}\n\nEncoding time: {watch.Elapsed}\n");
 
-enigma.SetRotorsPositions([1, 2, 1]);
+enigma.SetRotorsPositions([3, 5, 7]);
 
 watch = System.Diagnostics.Stopwatch.StartNew();
 string decodedMessage = enigma.DecodeMessage(encodedMessage);
