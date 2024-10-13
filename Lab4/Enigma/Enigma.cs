@@ -5,7 +5,7 @@ namespace Lab4.Enigma
 {
     public class Enigma(List<Rotor> rotors, Reflector reflector)
     {
-        readonly List<Rotor> rotors = rotors;
+        public readonly List<Rotor> rotors = rotors;
         readonly Reflector reflector = reflector;
 
         public void SetRotorsPositions(int[] positions)
@@ -19,12 +19,21 @@ namespace Lab4.Enigma
             }
         }
 
+        public void SetRotorsRotationNumbers(int[] rotationNumbers)
+        {
+            if (rotationNumbers.Length != rotors.Count) {
+                throw new Exception("Wrong numbers of rotors rotation numbers");
+            }
+
+            for (int i = 0; i < rotors.Count; i++) {
+                rotors[i].SetRotationNumber(rotationNumbers[i]);
+            }
+        }
+
         public string EncodeMessage(string message)
         {
             string alphabet = "abcdefghijklmnopqrstuvwxyz";
             string encodedMessage = "";
-
-            var toRotate = new bool[rotors.Count];
         
             foreach (var ch in message)
             {
@@ -34,18 +43,6 @@ namespace Lab4.Enigma
                 }
 
                 char encodedChar = ch;
-                toRotate[0] = true;
-
-                for (int i = 0; i < rotors.Count; i++) {
-                    var prevPosition = rotors[i].Position;
-
-                    if (toRotate[i]) {
-                        rotors[i].Rotate();
-                        toRotate[i] = false;
-                    }
-
-                    toRotate[(i + 1) % rotors.Count] = prevPosition > rotors[i].Position;
-                }
 
                 rotors.ForEach((rotor) => encodedChar = rotor.GetChar(encodedChar));
                 encodedChar = reflector.GetChar(encodedChar);
@@ -53,6 +50,12 @@ namespace Lab4.Enigma
                 for (int i = rotors.Count - 1; i >= 0; i--)
                 {
                     encodedChar = rotors[i].Sequence.FirstOrDefault(item => item.Value == encodedChar).Key;
+                }
+
+                for (int i = 0; i < rotors.Count; i++) {
+                    for (int j = 0; j < rotors[i].RotationNumber; j++) {
+                        rotors[i].Rotate();
+                    }
                 }
 
                 encodedMessage += encodedChar;

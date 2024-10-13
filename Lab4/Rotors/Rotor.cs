@@ -4,6 +4,7 @@ namespace Lab4.Rotors
     {
         public Dictionary<char, char> Sequence { get; private set; } = [];
         public int Position { get; private set; } = 1;
+        public int RotationNumber { get; private set; } = 1;
         public string SequenceFileText { get; private set; }
 
         public Rotor(string sequenceFile)
@@ -24,6 +25,15 @@ namespace Lab4.Rotors
             for (int i = 1; i < position; i++) {
                 Rotate();
             }
+        }
+
+        public void SetRotationNumber(int rotationNumber)
+        {
+            if (rotationNumber < 1 || rotationNumber > 26) {
+                throw new Exception("Rotor rotation number must be in range from 1 to 26");
+            }
+
+            RotationNumber = rotationNumber;
         }
 
         public char GetChar(char input) => Sequence[input];

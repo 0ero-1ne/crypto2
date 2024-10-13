@@ -6,14 +6,19 @@ List<Rotor> rotors = [
     new Rotor(@"./Rotors/RotorTwo.txt"),
     new Rotor(@"./Rotors/RotorThree.txt"),
     new Rotor(@"./Rotors/RotorFive.txt")
-];
+]; // First - right rotor, Last - left rotor
 
 Reflector reflector = new(@"./Reflectors/ReflectorC.txt");
 
 Enigma enigma = new(rotors, reflector);
-enigma.SetRotorsPositions([3, 5, 7]);
+enigma.SetRotorsPositions([1, 1, 1]);
+enigma.SetRotorsRotationNumbers([1, 2, 2]);
 
 string message = File.ReadAllText(@"./file.txt").ToLower();
+
+if (message == "") {
+    throw new Exception("Empty message");
+}
 
 Console.WriteLine($"MESSAGE\n{message}\n");
 
@@ -23,7 +28,7 @@ watch.Stop();
 
 Console.WriteLine($"ENCODED MESSAGE\n{encodedMessage}\n\nEncoding time: {watch.Elapsed}\n");
 
-enigma.SetRotorsPositions([3, 5, 7]);
+enigma.SetRotorsPositions([1, 1, 1]);
 
 watch = System.Diagnostics.Stopwatch.StartNew();
 string decodedMessage = enigma.DecodeMessage(encodedMessage);
