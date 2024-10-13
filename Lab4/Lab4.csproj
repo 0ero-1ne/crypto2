@@ -7,4 +7,22 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Include="file.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content> 
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Rotors\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content> 
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Reflectors\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content> 
+  </ItemGroup>
+
 </Project>
