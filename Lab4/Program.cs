@@ -3,15 +3,18 @@ using Lab4.Reflectors;
 using Lab4.Rotors;
 
 List<Rotor> rotors = [
-    new Rotor(@"./Rotors/RotorTwo.txt"),
+    new Rotor(@"./Rotors/RotorBeta.txt"),
     new Rotor(@"./Rotors/RotorThree.txt"),
-    new Rotor(@"./Rotors/RotorFive.txt")
+    new Rotor(@"./Rotors/RotorGamma.txt"),
 ]; // First - right rotor, Last - left rotor
 
 Reflector reflector = new(@"./Reflectors/ReflectorC.txt");
 
 Enigma enigma = new(rotors, reflector);
-enigma.SetRotorsPositions([1, 1, 1]);
+
+var rotorsPositions = new int[] {1, 1, 1};
+
+enigma.SetRotorsPositions(rotorsPositions);
 enigma.SetRotorsRotationNumbers([1, 2, 2]);
 
 string message = File.ReadAllText(@"./file.txt").ToLower();
@@ -28,7 +31,7 @@ watch.Stop();
 
 Console.WriteLine($"ENCODED MESSAGE\n{encodedMessage}\n\nEncoding time: {watch.Elapsed}\n");
 
-enigma.SetRotorsPositions([1, 1, 1]);
+enigma.SetRotorsPositions(rotorsPositions);
 
 watch = System.Diagnostics.Stopwatch.StartNew();
 string decodedMessage = enigma.DecodeMessage(encodedMessage);
