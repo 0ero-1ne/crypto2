@@ -71,8 +71,8 @@ namespace Lab8.ElGamal
 
         public record ElGamalEncryptedByte
         {
-            public long A { get; set; } // A parameter
-            public long B { get; set; } // B parameter
+            public long A { get; set; }
+            public long B { get; set; }
         }
     }
 }
