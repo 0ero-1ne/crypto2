@@ -36,7 +36,7 @@
               "RelativeDocumentMoniker": "Encryptors\\Base64Backpack.cs",
               "ToolTip": "C:\\Univer\\Sec\\Lab7\\Encryptors\\Base64Backpack.cs",
               "RelativeToolTip": "Encryptors\\Base64Backpack.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAACoAAAARAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-29T15:09:00.951Z",
               "EditorCaption": ""
@@ -51,8 +51,7 @@
               "RelativeToolTip": "Encryptors\\AsciiBackpack.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-29T15:04:17.242Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-29T15:04:17.242Z"
             },
             {
               "$type": "Document",
@@ -64,8 +63,7 @@
               "RelativeToolTip": "Encryptors\\Backpack.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-29T14:55:24.161Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-29T14:55:24.161Z"
             },
             {
               "$type": "Document",
@@ -77,8 +75,7 @@
               "RelativeToolTip": "Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-28T17:29:38.065Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-28T17:29:38.065Z"
             }
           ]
         }
