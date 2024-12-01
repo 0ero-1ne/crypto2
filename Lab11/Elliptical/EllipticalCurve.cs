@@ -2,23 +2,28 @@ using Lab11.ExtensionMethods;
 
 namespace Lab11.Elliptical
 {
-    public class EllipticalCurve(int a, int b, int p)
+    public class EllipticalCurve
     {
-        public int A { get; set; } = a;
-        public int B { get; set; } = b;
-        public int P { get; set; } = p;
+        public int A { get; private set; }
+        public int B { get; private set; }
+        public int P { get; private set; }
+        public EllipticalPoint[] Points { get; private set; } // w/o Infinite point
 
-        public EllipticalPoint[] GetEllipticalPoints(int x1, int x2)
+        public EllipticalCurve(int a, int b, int p)
+        {
+            if (a < 0 || b < 0 || p <= 0) throw new Exception("Params of curve cannot be negative or 0");
+            A = a;
+            B = b;
+            P = p;
+            Points = GetEllipticalPoints();
+        }
+
+        public EllipticalPoint[] GetPointsRange(int x1, int x2)
         {
             if (x1 < 0 || x2 < 0) throw new Exception("params cannot be below 0");
             x1 = x1 >= P ? 0 : x1;
-            x2 = x2 >= P ? P - 1 : x2;
-            var xRange = Enumerable.Range(x1, x2 - x1 + 1).Select(x => KeyValuePair.Create(x % P, CurveFunction(x)));
-            var yRange = Enumerable.Range(0, P).Select(y => KeyValuePair.Create(y, y * y % P));
-
-            return xRange.SelectMany(
-                x => yRange.Where(y => y.Value == x.Value).Select(y => new EllipticalPoint(x.Key, y.Key))
-            ).ToArray();
+            x2 = x2 >= P ? P : x2;
+            return [.. Points.Where(point => point.X >= x1 && point.X <= x2)];
         }
 
         public IPoint SumPoints(IPoint point1, IPoint point2)
@@ -76,6 +81,16 @@ namespace Lab11.Elliptical
             down = down.RemoveMinusByModule(P) % P;
 
             return up % down == 0 ? up / down % P : up * down.GetReversed(P) % P;
+        }
+
+        private EllipticalPoint[] GetEllipticalPoints()
+        {
+            var xRange = Enumerable.Range(0, P).Select(x => KeyValuePair.Create(x, CurveFunction(x)));
+            var yRange = Enumerable.Range(0, P).Select(y => KeyValuePair.Create(y, y * y % P));
+
+            return [.. xRange.SelectMany(
+                x => yRange.Where(y => y.Value == x.Value).Select(y => new EllipticalPoint(x.Key, y.Key))
+            )];
         }
 
         private static IPoint? CheckPointsForInfinity(IPoint point1, IPoint point2)

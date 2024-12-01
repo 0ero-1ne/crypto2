@@ -3,12 +3,12 @@ using Lab4.Reflectors;
 using Lab4.Rotors;
 
 List<Rotor> rotors = [
-    new Rotor(@"./Rotors/RotorOne.txt"),
-    new Rotor(@"./Rotors/RotorEight.txt"),
-    new Rotor(@"./Rotors/RotorBeta.txt"),
+    new Rotor(@"./Rotors/RotorFour.txt"),
+    new Rotor(@"./Rotors/RotorGamma.txt"),
+    new Rotor(@"./Rotors/RotorTwo.txt"),
 ]; // First - right rotor, Last - left rotor
 
-Reflector reflector = new(@"./Reflectors/ReflectorBThin.txt");
+Reflector reflector = new(@"./Reflectors/ReflectorC.txt");
 
 Enigma enigma = new(rotors, reflector);
 
