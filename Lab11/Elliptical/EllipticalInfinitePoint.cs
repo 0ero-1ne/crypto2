@@ -19,7 +19,7 @@ namespace Lab11.Elliptical
 
         public override string ToString()
         {
-            return "EllipticalInfinitePoint";
+            return "Infinite(-; -)";
         }
 
         public static bool operator ==(EllipticalInfinitePoint point1, EllipticalInfinitePoint point2)

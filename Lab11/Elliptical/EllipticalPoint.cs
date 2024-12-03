@@ -19,7 +19,7 @@ namespace Lab11.Elliptical
 
         public override string ToString()
         {
-            return $"EllipticalPoint({X};{Y})";
+            return $"({X}; {Y})";
         }
 
         public static bool operator ==(EllipticalPoint point1, EllipticalPoint point2)

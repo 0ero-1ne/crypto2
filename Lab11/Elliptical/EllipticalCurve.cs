@@ -11,7 +11,7 @@ namespace Lab11.Elliptical
 
         public EllipticalCurve(int a, int b, int p)
         {
-            if (a < 0 || b < 0 || p <= 0) throw new Exception("Params of curve cannot be negative or 0");
+            if (p <= 0) throw new Exception("P param of curve cannot be negative or 0");
             A = a;
             B = b;
             P = p;
@@ -42,26 +42,41 @@ namespace Lab11.Elliptical
 
         public IPoint MultiplyPoint(IPoint point, int k)
         {
-            var result = point;
-            while (k > 1)
+            if (k == 0 || point is EllipticalInfinitePoint) return new EllipticalInfinitePoint();
+            IPoint result = new EllipticalInfinitePoint();
+            var addend = point;
+
+            while (k > 0)
             {
-                result = k % 2 == 0 ? SumPoints(result, result) : SumPoints(result, point);
-                k = k % 2 == 0 ? k / 2 : k - 1;
+                if (k % 2 == 1)
+                {
+                    result = SumPoints(result, addend);
+                }
+
+                addend = SumPoints(addend, addend);
+                k /= 2;
             }
+
             return result;
         }
 
-        public IPoint PMinusQPlusR(IPoint pPoint, IPoint qPoint)
+        public int GetPointOrder(IPoint point)
         {
-            var rPoint = SumPoints(pPoint, qPoint);
-            return SumPoints(SumPoints(pPoint, GetMinusPoint(qPoint)), rPoint);
+            int order = 1;
+            IPoint buf = point;
+            while (buf is not EllipticalInfinitePoint)
+            {
+                buf = SumPoints(buf, point);
+                order++;
+            }
+            return order;
         }
 
-        public IPoint KPPlusLQPMinusR(IPoint pPoint, IPoint qPoint, int k, int l)
+        public IPoint GetMinusPoint(IPoint point)
         {
-            var kP = MultiplyPoint(pPoint, k);
-            var lQ = MultiplyPoint(qPoint, l);
-            return SumPoints(SumPoints(kP, lQ), SumPoints(pPoint, qPoint));
+            return point is EllipticalInfinitePoint ?
+                point :
+                new EllipticalPoint(point.X, (-point.Y).RemoveMinusByModule(P));
         }
 
         private int GetLambda(IPoint point1, IPoint point2)
@@ -75,6 +90,7 @@ namespace Lab11.Elliptical
             {
                 up = 3 * point1.X * point1.X + A;
                 down = 2 * point1.Y;
+                if (down == 0) return -1;
             }
 
             up = up.RemoveMinusByModule(P) % P;
@@ -101,13 +117,6 @@ namespace Lab11.Elliptical
                 (EllipticalInfinitePoint, EllipticalInfinitePoint) => new EllipticalInfinitePoint(),
                 _ => null
             };
-        }
-
-        private IPoint GetMinusPoint(IPoint point)
-        {
-            return point is EllipticalInfinitePoint ?
-                point :
-                new EllipticalPoint(point.X, (-point.Y).RemoveMinusByModule(P));
         }
         
         private int CurveFunction(int x) => (x * x * x + A * x + B) % P;
