@@ -5,6 +5,14 @@ using Lab11.Elliptical;
 var timer = System.Diagnostics.Stopwatch.StartNew();
 var curve = new EllipticalCurve(-1, 1, 751);
 
+var points = curve.GetPointsRange(36, 70);
+Console.WriteLine("Точки ЭК при x = {36, 70}");
+
+foreach (var item in points)
+{
+    Console.WriteLine(item);
+}
+
 Console.WriteLine("Операции над точками P, Q и R:");
 var P = new EllipticalPoint(61, 129);
 var Q = new EllipticalPoint(59, 365);
