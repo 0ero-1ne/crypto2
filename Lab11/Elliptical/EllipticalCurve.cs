@@ -48,13 +48,13 @@ namespace Lab11.Elliptical
 
             while (k > 0)
             {
-                if (k % 2 == 1)
+                if ((k & 1) == 1)
                 {
                     result = SumPoints(result, addend);
                 }
 
                 addend = SumPoints(addend, addend);
-                k /= 2;
+                k >>= 1;
             }
 
             return result;

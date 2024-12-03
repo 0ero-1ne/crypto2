@@ -1,5 +1,6 @@
 using Lab11.Elliptical;
 using Lab11.ExtensionMethods;
+using Lab11.Hash;
 
 namespace Lab11.ECDSA
 {
@@ -9,7 +10,6 @@ namespace Lab11.ECDSA
         public IPoint G { get; } = new EllipticalPoint(416, 55); // point generator signature
         public IPoint Q { get; private set; } // public key
         private readonly int D; // private key
-        private readonly string RussianAlphabet = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
         private readonly int Order;
 
         public ECDSA(EllipticalCurve curve)
@@ -26,7 +26,7 @@ namespace Lab11.ECDSA
 
         public SignedMessage Sign(string message)
         {
-            var hM = message.Sum(c => Curve.Points[RussianAlphabet.IndexOf(c)].X) % Order;
+            var hM = (int)(SHA1.Hash(message, false) % Order);
             var s = 0;
             var r = 0;
 
@@ -58,7 +58,7 @@ namespace Lab11.ECDSA
                 return false;
             }
             
-            var hM = signedMessage.Message!.Sum(c => Curve.Points[RussianAlphabet.IndexOf(c)].X) % Order;
+            var hM = (int)(SHA1.Hash(signedMessage.Message!, false) % Order);
             var w = signedMessage.S.GetReversed(Order);
 
             var u1 = w * hM % Order;
