@@ -119,6 +119,6 @@ namespace Lab11.Elliptical
             };
         }
         
-        private int CurveFunction(int x) => (x * x * x + A * x + B) % P;
+        private int CurveFunction(int x) => ((x * x * x + A * x + B) % P).RemoveMinusByModule(P);
     }
 }
