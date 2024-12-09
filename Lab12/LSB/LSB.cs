@@ -13,7 +13,7 @@ namespace Lab12.LSB
 
             var (pixels, width, height) = ImageProcess.ImageProcess.GetImageBytes(filename);
 
-            if (pixels.Length * 3 / 2 < messageBits.Length * 8)
+            if (pixels.Length * 3 / 2 < messageBits.Length)
             {
                 throw new Exception("Too small image for your message");
             }
@@ -35,7 +35,7 @@ namespace Lab12.LSB
             var newFilename = fileInfo.DirectoryName + "\\" + filenameWOExtension + "-encrypted.png";
 
             ExifProfile profile = new();
-            profile.SetValue(ExifTag.ImageNumber, (ushort)messageBytes.Length);
+            profile.SetValue(ExifTag.ImageNumber, (uint)messageBytes.Length);
             profile.SetValue(ExifTag.Copyright, even.ToString());
 
             ImageProcess.ImageProcess.SaveImage(pixels, width, height, newFilename, profile);
