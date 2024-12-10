@@ -4,7 +4,7 @@ using Lab12.LSB;
 var message = File.ReadAllText(@"file.txt");
 
 var timer = System.Diagnostics.Stopwatch.StartNew();
-LSB.Encrypt(@"test.png", message, true);
+LSB.Encrypt(@"test.png", message, false);
 timer.Stop();
 
 Console.WriteLine("Put the message in image in " + timer);
