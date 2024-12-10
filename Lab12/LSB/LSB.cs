@@ -56,27 +56,39 @@ namespace Lab12.LSB
 
             if (messageLength == 0) return "There is no any message";
 
-            var counter = 0;
-            var binaryData = "";
-            
+            var bitCounter = 0;
+            byte messageByte = 0;
+            byte byteCounter = 0;
 
-            byte[] bytes = new byte[messageLength];
+            List<byte> bytes = [];
             
             for (int i = isEven ? 0 : 1; i < pixels.Length; i += 2) {
-                binaryData += pixels[i].R & 1;
-                if (++counter == messageLength * 8) break;
-                binaryData += pixels[i].G & 1;
-                if (++counter == messageLength * 8) break;
-                binaryData += pixels[i].B & 1;
-                if (++counter == messageLength * 8) break;
+                messageByte = (byte)((messageByte << 1) + (pixels[i].R & 1));
+                if (++byteCounter == 8)
+                {
+                    bytes.Add(messageByte);
+                    messageByte = byteCounter = 0;
+                }
+                if (++bitCounter == messageLength * 8) break;
+
+                messageByte = (byte)((messageByte << 1) + (pixels[i].G & 1));
+                if (++byteCounter == 8)
+                {
+                    bytes.Add(messageByte);
+                    messageByte = byteCounter = 0;
+                }
+                if (++bitCounter == messageLength * 8) break;
+
+                messageByte = (byte)((messageByte << 1) + (pixels[i].B & 1));
+                if (++byteCounter == 8)
+                {
+                    bytes.Add(messageByte);
+                    messageByte = byteCounter = 0;
+                }
+                if (++bitCounter == messageLength * 8) break;
             }
 
-            for(int i = 0; i < messageLength; i++)
-            {
-                bytes[i] = Convert.ToByte(binaryData.Substring(8 * i, 8), 2);
-            }
-
-            return Encoding.UTF8.GetString(bytes);
+            return Encoding.UTF8.GetString([.. bytes]);
         }
 
         private static byte GetEncryptedPixelChannelByte(byte pixelChannelByte, char messageBit)
